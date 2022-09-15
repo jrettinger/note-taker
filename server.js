@@ -37,3 +37,26 @@ app.get("/api/notes", (req, res) => {
       }
     });
   });
+  /*
+    route - /api/notes
+    method - POST
+    access - public
+*/
+app.post("/api/notes", (req, res) => {
+    let newNote = {
+      title: req.body.title,
+      text: req.body.text,
+      id: shortid.generate(),
+    };
+    fs.readFile("./db/db.json", "utf-8", function (err, data) {
+      if (err) {
+        res.json({ success: false });
+      } else {
+        data = JSON.parse(data);
+        data.push(newNote);
+        fs.writeFileSync("./db/db.json", JSON.stringify(data));
+        res.json(newNote);
+      }
+    });
+  });
+  
