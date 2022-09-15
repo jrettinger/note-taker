@@ -59,4 +59,33 @@ app.post("/api/notes", (req, res) => {
       }
     });
   });
+/*
+    route - /api/notes/:id
+    method - DELETE
+    access - public
+*/
+app.delete("/api/notes/:id", (req, res) => {
+    const id = req.params.id;
+    fs.readFile("./db/db.json", "utf-8", function (err, data) {
+      if (err) {
+        res.json({ success: false });
+      } else {
+        data = JSON.parse(data);
+        data = data.filter((post) => post.id != id);
+        fs.writeFileSync("./db/db.json", JSON.stringify(data));
+        res.json({ success: true });
+      }
+    });
+  });
+  
+  /*
+    route - *
+    method - GET
+    access - public
+*/
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "/public/index.html"));
+  });
+  
+  app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
   
