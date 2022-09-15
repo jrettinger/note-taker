@@ -23,3 +23,17 @@ app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"));
   });
   
+  /*
+    route - /api/notes
+    method - GET
+    access - public
+*/
+app.get("/api/notes", (req, res) => {
+    fs.readFile("./db/db.json", "utf-8", function (err, data) {
+      if (err) {
+        res.json([]);
+      } else {
+        res.json(JSON.parse(data));
+      }
+    });
+  });
